@@ -1,0 +1,548 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#fireworks-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Compte à rebours */
+.countdown-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 30px 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+}
+
+.countdown-container h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.8rem;
+    margin-bottom: 30px;
+    color: #ffdd59;
+    text-shadow: 0 0 10px rgba(255, 221, 89, 0.7);
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px 0;
+}
+
+.time-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 25px 15px;
+    min-width: 130px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.time-box:hover {
+    transform: translateY(-10px);
+    border-color: #ffdd59;
+}
+
+.time-box span {
+    font-size: 4rem;
+    font-weight: 700;
+    display: block;
+    color: #ffdd59;
+    text-shadow: 0 0 15px rgba(255, 221, 89, 0.8);
+}
+
+.time-box p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #e0e0e0;
+}
+
+.anniversary-date {
+    font-size: 1.4rem;
+    margin-top: 20px;
+    color: #a5b1c2;
+}
+
+/* Message d'anniversaire */
+.birthday-message {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 30px 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: none;
+    animation: fadeIn 1s ease;
+}
+
+.birthday-message.show {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message-content h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 3.2rem;
+    margin-bottom: 20px;
+    color: #ff9f1a;
+    text-shadow: 0 0 15px rgba(255, 159, 26, 0.7);
+}
+
+.greeting {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #f7f1e3;
+}
+
+.wishes {
+    font-size: 1.5rem;
+    margin-top: 30px;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* Gâteau d'anniversaire */
+.cake-container {
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.cake {
+    position: relative;
+    width: 200px;
+    height: 150px;
+}
+
+.cake-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 180px;
+    height: 60px;
+    background: #e17055;
+    border-radius: 10px 10px 0 0;
+}
+
+.cake-middle {
+    position: absolute;
+    bottom: 60px;
+    width: 150px;
+    height: 50px;
+    background: #fab1a0;
+    border-radius: 10px 10px 0 0;
+    left: 15px;
+}
+
+.cake-top {
+    position: absolute;
+    bottom: 110px;
+    width: 120px;
+    height: 40px;
+    background: #fd79a8;
+    border-radius: 10px 10px 0 0;
+    left: 30px;
+}
+
+.candle {
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 40px;
+    background: #ffdd59;
+    border-radius: 5px;
+}
+
+.flame {
+    position: absolute;
+    bottom: 190px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 30px;
+    background: #ff9f1a;
+    border-radius: 50% 50% 20% 20%;
+    animation: flicker 0.5s infinite alternate;
+    box-shadow: 0 0 20px #ff9f1a;
+}
+
+@keyframes flicker {
+    0% { transform: translateX(-50%) scale(1); }
+    100% { transform: translateX(-50%) scale(1.1); }
+}
+
+/* Décorations */
+.decorations {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.decoration {
+    font-size: 2.5rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.balloon {
+    background: linear-gradient(135deg, #ff7675, #fd79a8);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.balloon1 { animation-delay: 0s; }
+.balloon2 { animation-delay: 1s; background: linear-gradient(135deg, #74b9ff, #0984e3); }
+.balloon3 { animation-delay: 2s; background: linear-gradient(135deg, #55efc4, #00b894); }
+.balloon4 { animation-delay: 3s; background: linear-gradient(135deg, #ffeaa7, #fdcb6e); }
+.balloon5 { animation-delay: 4s; background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-30px); }
+}
+
+/* Messages */
+.messages-section {
+    width: 100%;
+    margin: 40px 0;
+    text-align: center;
+}
+
+.messages-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #ffdd59;
+}
+
+.messages-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.message-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    width: 300px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.message-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.message-icon {
+    font-size: 2.5rem;
+    color: #ffdd59;
+    margin-bottom: 15px;
+}
+
+.message-card p {
+    font-size: 1.3rem;
+    line-height: 1.5;
+}
+
+/* Contrôles */
+.controls {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.controls h3 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: #ffdd59;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.btn {
+    background: linear-gradient(135deg, #ff9f1a, #ffdd59);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0c2461;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 159, 26, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 159, 26, 0.6);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn i {
+    font-size: 1.4rem;
+}
+
+/* Instructions */
+.instructions {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #a5b1c2;
+    width: 100%;
+}
+
+.instructions i {
+    color: #ffdd59;
+    margin-right: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .countdown {
+        flex-wrap: wrap;
+    }
+
+    .time-box {
+        min-width: 100px;
+    }
+
+    .countdown-container h1, .message-content h1 {
+        font-size: 2rem;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .messages-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .message-card {
+        width: 100%;
+    }
+}
+/* Compte à rebours initial */
+.initial-countdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0c2461, #1e3799, #4a69bd);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.countdown-overlay {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 50px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    max-width: 600px;
+    width: 90%;
+}
+
+.countdown-overlay h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 3rem;
+    color: #ffdd59;
+    margin-bottom: 40px;
+    text-shadow: 0 0 15px rgba(255, 221, 89, 0.7);
+}
+
+.initial-count {
+    font-size: 8rem;
+    font-weight: 700;
+    color: #ff9f1a;
+    text-shadow: 0 0 30px rgba(255, 159, 26, 0.8);
+    margin: 30px 0;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.countdown-overlay p {
+    font-size: 1.5rem;
+    color: #e0e0e0;
+    margin-top: 30px;
+}
+
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 15px;
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffdd59;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Bouton de téléchargement de carte */
+.card-download {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.download-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff9f1a, #ffdd59);
+    color: #0c2461;
+    text-decoration: none;
+    padding: 18px 35px;
+    border-radius: 50px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgba(255, 159, 26, 0.4);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    margin: 20px 0;
+}
+
+.download-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 159, 26, 0.6);
+    color: #0c2461;
+}
+
+.download-btn:active {
+    transform: translateY(0);
+}
+
+.download-btn i {
+    margin-right: 10px;
+    font-size: 1.6rem;
+}
+
+.download-info {
+    font-size: 1.1rem;
+    color: #a5b1c2;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+.download-card-btn {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Animation de transition */
+.fade-out {
+    animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
+}

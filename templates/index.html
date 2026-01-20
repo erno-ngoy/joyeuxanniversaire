@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyeux Anniversaire!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Écran de chargement avec compte à rebours initial -->
+    <div class="initial-countdown" id="initial-countdown">
+        <div class="countdown-overlay">
+            <h1>Préparez-vous à célébrer !</h1>
+            <div class="initial-count">
+                <span id="initial-seconds">5</span>
+            </div>
+            <p>Le site se charge dans quelques instants...</p>
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas pour les feux d'artifice -->
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- Contenu principal (initialement caché) -->
+    <div class="container" id="main-content" style="display: none;">
+        <!-- Section de compte à rebours -->
+        <div class="countdown-container" id="countdown-container">
+            <h1>Compte à rebours pour l'anniversaire de Glodi !</h1>
+            <div class="countdown">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <p>Jours</p>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <p>Heures</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <p>Minutes</p>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <p>Secondes</p>
+                </div>
+            </div>
+            <p class="anniversary-date">Date de l'anniversaire : <span id="anniversary-date-display">{{ anniversary_date }}</span></p>
+        </div>
+
+        <!-- Message d'anniversaire (caché au début) -->
+        <div class="birthday-message" id="birthday-message">
+            <div class="message-content">
+                <h1><i class="fas fa-birthday-cake"></i> Joyeux Anniversaire Glodi NONDE ! <i class="fas fa-birthday-cake"></i></h1>
+                <p class="greeting">Que cette journée soit remplie de joie, de rires et de moments inoubliables !</p>
+                <div class="cake-container">
+                    <div class="cake">
+                        <div class="cake-top"></div>
+                        <div class="cake-middle"></div>
+                        <div class="cake-bottom"></div>
+                        <div class="candle"></div>
+                        <div class="flame"></div>
+                    </div>
+                </div>
+                <p class="wishes">Nous te souhaitons une merveilleuse année remplie de bonheur, de santé et de réussite dans tous tes projets !</p>
+
+                <!-- Bouton pour télécharger la carte -->
+                <div class="card-download">
+                    <a href="{{ url_for('download_card') }}" class="download-btn" id="download-card-btn">
+                        <i class="fas fa-download"></i> Télécharger la carte d'anniversaire
+                    </a>
+                    <p class="download-info">Cliquez pour télécharger une belle carte d'anniversaire personnalisée pour Glodi !</p>
+                </div>
+
+                <div class="confetti-container"></div>
+            </div>
+        </div>
+
+        <!-- Dessins et décorations d'anniversaire -->
+        <div class="decorations">
+            <div class="decoration balloon balloon1"><i class="fas fa-birthday-cake"></i></div>
+            <div class="decoration balloon balloon2"><i class="fas fa-gift"></i></div>
+            <div class="decoration balloon balloon3"><i class="fas fa-star"></i></div>
+            <div class="decoration balloon balloon4"><i class="fas fa-heart"></i></div>
+            <div class="decoration balloon balloon5"><i class="fas fa-music"></i></div>
+        </div>
+
+        <!-- Section pour les messages personnalisés -->
+        <div class="messages-section">
+            <h2>Messages pour Glodi</h2>
+            <div class="messages-container">
+                <div class="message-card">
+                    <div class="message-icon"><i class="fas fa-glass-cheers"></i></div>
+                    <p>Que cette nouvelle année de vie t'apporte plein de bonnes surprises !</p>
+                </div>
+                <div class="message-card">
+                    <div class="message-icon"><i class="fas fa-star"></i></div>
+                    <p>Profite de chaque instant, tu le mérites amplement !</p>
+                </div>
+                <div class="message-card">
+                    <div class="message-icon"><i class="fas fa-heart"></i></div>
+                    <p>Une pensée spéciale pour toi en ce jour exceptionnel !</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contrôles des feux d'artifice -->
+        <div class="controls">
+            <h3>Contrôles des festivités</h3>
+            <div class="buttons">
+                <button id="toggle-fireworks" class="btn">
+                    <i class="fas fa-fire"></i> Feux d'artifice
+                </button>
+                <button id="toggle-confetti" class="btn">
+                    <i class="fas fa-star"></i> Confettis
+                </button>
+                <button id="play-music" class="btn">
+                    <i class="fas fa-music"></i> Musique
+                </button>
+                <button id="restart-initial-countdown" class="btn">
+                    <i class="fas fa-redo"></i> Redémarrer l'animation
+                </button>
+                <a href="{{ url_for('download_card') }}" class="btn download-card-btn">
+                    <i class="fas fa-gift"></i> Carte d'anniversaire
+                </a>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <p><i class="fas fa-info-circle"></i> Le message d'anniversaire et les feux d'artifice s'afficheront automatiquement lorsque le compte à rebours atteindra zéro. Vous pouvez également les activer manuellement avec les boutons ci-dessus.</p>
+        </div>
+    </div>
+
+    <!-- Audio pour la musique de fond (caché) -->
+    <audio id="birthday-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-happy-birthday-to-you-443.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+
+    <!-- Audio pour le son de joyeux anniversaire (caché) -->
+    <audio id="happy-birthday-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-happy-birthday-horn-576.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
